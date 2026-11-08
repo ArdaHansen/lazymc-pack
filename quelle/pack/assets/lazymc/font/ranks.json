@@ -1,0 +1,157 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_spieler.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue200"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_premium.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue201"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_dream.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue202"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_prime.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue203"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_ultimate.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue204"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_creator.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue205"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_tsup.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue206"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_tbuilder.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue207"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_sup.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue208"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_builder.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue209"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_supplus.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue20a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_builderplus.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue20b"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_mod.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue20c"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_modplus.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue20d"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_admin.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue20e"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_manager.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue20f"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/rank_owner.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue210"
+      ]
+    }
+  ]
+}

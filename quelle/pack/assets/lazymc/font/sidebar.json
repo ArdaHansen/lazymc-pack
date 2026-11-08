@@ -1,0 +1,50 @@
+{
+  "providers": [
+    {
+      "type": "space",
+      "advances": {
+        "\ue100": -2,
+        "\ue101": -83,
+        "\ue102": 41,
+        "\ue103": 120,
+        "\ue002": -1
+      }
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/sb_frame.png",
+      "ascent": 8,
+      "height": 104,
+      "chars": [
+        "\ue010"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/sb_icons.png",
+      "ascent": 7,
+      "height": 8,
+      "chars": [
+        "\ue020\ue021\ue022\ue023\ue024\ue025"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/lazymc_logo_l.png",
+      "ascent": 8,
+      "height": 16,
+      "chars": [
+        "\ue000"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/lazymc_logo_r.png",
+      "ascent": 8,
+      "height": 16,
+      "chars": [
+        "\ue001"
+      ]
+    }
+  ]
+}

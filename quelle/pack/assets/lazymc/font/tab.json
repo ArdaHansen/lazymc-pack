@@ -1,0 +1,28 @@
+{
+  "providers": [
+    {
+      "type": "space",
+      "advances": {
+        "\ue002": -1
+      }
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/lazymc_logo_l.png",
+      "ascent": 7,
+      "height": 40,
+      "chars": [
+        "\ue000"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/lazymc_logo_r.png",
+      "ascent": 7,
+      "height": 40,
+      "chars": [
+        "\ue001"
+      ]
+    }
+  ]
+}
