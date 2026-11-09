@@ -63,6 +63,9 @@ def badge(d, cx, cy, r, fill, kind):
     if kind=='+': ln(d,[(cx-r*0.5,cy),(cx+r*0.5,cy)],w,W); ln(d,[(cx,cy-r*0.5),(cx,cy+r*0.5)],w,W)
     if kind=='x': ln(d,[(cx-r*0.4,cy-r*0.4),(cx+r*0.4,cy+r*0.4)],w,W); ln(d,[(cx+r*0.4,cy-r*0.4),(cx-r*0.4,cy+r*0.4)],w,W)
     if kind=='v': ln(d,[(cx-r*0.45,cy),(cx-r*0.1,cy+r*0.35),(cx+r*0.5,cy-r*0.35)],w,W)
+    if kind=='up': ln(d,[(cx-r*0.4,cy+r*0.1),(cx,cy-r*0.35),(cx+r*0.4,cy+r*0.1)],w,W); ln(d,[(cx,cy-r*0.3),(cx,cy+r*0.45)],w,W)
+    if kind=='down': ln(d,[(cx-r*0.4,cy-r*0.1),(cx,cy+r*0.35),(cx+r*0.4,cy-r*0.1)],w,W); ln(d,[(cx,cy+r*0.3),(cx,cy-r*0.45)],w,W)
+    if kind=='=': ln(d,[(cx-r*0.4,cy-r*0.2),(cx+r*0.4,cy-r*0.2)],w,W); ln(d,[(cx-r*0.4,cy+r*0.2),(cx+r*0.4,cy+r*0.2)],w,W)
     if kind=='$': ln(d,[(cx+r*0.35,cy-r*0.35),(cx-r*0.3,cy-r*0.35),(cx-r*0.35,cy),(cx+r*0.35,cy),(cx+r*0.3,cy+r*0.35),(cx-r*0.35,cy+r*0.35)],w-2,W); ln(d,[(cx,cy-r*0.6),(cx,cy+r*0.6)],w-3,W)
 def person(d, cx, cy, s, c):
     d.ellipse((cx-24*s,cy-60*s,cx+24*s,cy-12*s), fill=c)
@@ -305,6 +308,124 @@ def _(d): tag(d, W, CY); badge(d,184,184,34,RD,'x')
 def _(d): gear(d, W); badge(d,184,184,34,RD,'v')
 @icon('voucher', GR)
 def _(d): doc(d, W, GR); badge(d,184,184,34,GR,'+')
+
+
+def bubble(d, c, acc):
+    d.rounded_rectangle((44,58,212,170), 34, fill=c); d.polygon([(84,160),(80,206),(126,166)], fill=c)
+    for x in (92,128,164): d.ellipse((x-12,102,x+12,126), fill=acc)
+def eye(d, c, acc):
+    top=[(36+i*4.6, 128-math.sin(math.pi*i/40)*62) for i in range(41)]
+    bot=[(36+i*4.6, 128+math.sin(math.pi*i/40)*62) for i in range(41)]
+    d.polygon(top+bot[::-1], fill=c)
+    d.ellipse((90,90,166,166), fill=acc); d.ellipse((114,114,142,142), fill=DK); d.ellipse((132,104,146,118), fill=W)
+def speaker(d, c, acc):
+    d.polygon([(50,104),(86,104),(130,64),(130,192),(86,152),(50,152)], fill=c)
+    d.arc((110,84,182,172), -50, 50, fill=acc, width=14); d.arc((104,52,214,204), -50, 50, fill=acc, width=14)
+def board(d, c, acc):
+    d.rounded_rectangle((56,44,200,212), 18, fill=c); d.rounded_rectangle((56,44,200,86), 18, fill=acc); d.rectangle((56,70,200,86), fill=acc)
+    for y in (108,136,164): d.ellipse((76,y,92,y+16), fill=hx('#5E6673')); d.rounded_rectangle((102,y+2,178,y+14), 6, fill=hx('#9AA4B2'))
+def funnel(d, c): d.polygon([(48,58),(208,58),(148,132),(148,196),(108,214),(108,132)], fill=c)
+def sortbars(d, c, acc):
+    for i,(w) in enumerate((130,100,70)):
+        d.rounded_rectangle((46,64+i*44,46+w,92+i*44), 12, fill=c)
+    ln(d,[(196,60),(196,190)],18,acc); d.polygon([(166,170),(226,170),(196,212)], fill=acc)
+def refresh(d, c):
+    d.arc((56,56,200,200), 200, 340, fill=c, width=22); d.arc((56,56,200,200), 20, 160, fill=c, width=22)
+    d.polygon([(186,60),(210,112),(156,104)], fill=c); d.polygon([(70,196),(46,144),(100,152)], fill=c)
+def info(d, c):
+    d.ellipse((52,52,204,204), fill=c); d.ellipse((116,76,140,100), fill=DK); d.rounded_rectangle((115,112,141,182), 10, fill=DK)
+def inbox(d, c, acc):
+    d.polygon([(48,132),(84,72),(172,72),(208,132),(208,200),(48,200)], fill=c)
+    d.polygon([(66,132),(104,132),(116,154),(140,154),(152,132),(190,132),(190,184),(66,184)], fill=DK)
+    ln(d,[(128,36),(128,112)],16,acc); d.polygon([(98,96),(158,96),(128,130)], fill=acc)
+def magnifier(d, c): d.ellipse((50,50,160,160), outline=c, width=20); ln(d,[(146,146),(204,204)],26,c)
+def coins(d):
+    for i,y in enumerate((176,148,120,92)):
+        d.ellipse((60,y-22,196,y+22), fill=hx('#C7922A')); d.ellipse((60,y-30,196,y+14), fill=GD)
+def cube(d, c, acc):
+    d.polygon([(128,48),(204,90),(128,132),(52,90)], fill=c); d.polygon([(52,90),(128,132),(128,214),(52,172)], fill=hx('#C9D1DC')); d.polygon([(204,90),(128,132),(128,214),(204,172)], fill=hx('#9AA4B2'))
+def chart(d, c, acc):
+    ln(d,[(52,52),(52,204),(208,204)],14,c)
+    for i,h in enumerate((60,110,84,140)): d.rounded_rectangle((76+i*32,196-h,100+i*32,196), 6, fill=acc if i==3 else c)
+def wave(d, c):
+    pts=[(40+i*4, 128+math.sin(i/7)*48*(1-i/60*0.5)) for i in range(45)]; ln(d,pts,16,c)
+def hourglass(d, c, acc):
+    d.rounded_rectangle((60,40,196,62), 10, fill=c); d.rounded_rectangle((60,194,196,216), 10, fill=c)
+    d.polygon([(76,62),(180,62),(140,128),(180,194),(76,194),(116,128)], fill=hx('#C9D1DC'))
+    d.polygon([(100,78),(156,78),(128,116)], fill=acc); d.polygon([(128,150),(170,190),(86,190)], fill=acc)
+def gift(d, c, acc):
+    d.rounded_rectangle((52,104,204,212), 14, fill=c); d.rounded_rectangle((42,82,214,120), 12, fill=c)
+    d.rectangle((116,82,140,212), fill=acc); d.rectangle((42,96,214,106), fill=hx('#C9D1DC'))
+    d.ellipse((76,40,128,92), outline=acc, width=14); d.ellipse((128,40,180,92), outline=acc, width=14)
+def palette(d, c):
+    d.ellipse((40,48,216,208), fill=c); d.ellipse((128,132,176,180), fill=DK)
+    for (x,y,col) in ((88,96,RD),(130,74,GD),(172,98,GR),(84,148,BL)): d.ellipse((x-17,y-17,x+17,y+17), fill=col)
+def star(d, c, cx=128, cy=128, r=88):
+    pts=[]
+    for i in range(10):
+        a=-math.pi/2+i*math.pi/5; rr=r if i%2==0 else r*0.45; pts.append((cx+math.cos(a)*rr, cy+math.sin(a)*rr))
+    d.polygon(pts, fill=c)
+
+@icon('messages', CY)
+def _(d): bubble(d, W, CY)
+@icon('join', GR)
+def _(d): door(d, W, GR); badge(d,184,184,34,GR,'+')
+@icon('scoreboard', CY)
+def _(d): board(d, W, CY)
+@icon('eye', PU)
+def _(d): eye(d, W, PU)
+@icon('sound', CY)
+def _(d): speaker(d, W, CY)
+@icon('filter', CY)
+def _(d): funnel(d, W)
+@icon('sort', CY)
+def _(d): sortbars(d, W, CY)
+@icon('refresh', GR)
+def _(d): refresh(d, W)
+@icon('info', CY)
+def _(d): info(d, W)
+@icon('my_listings', GD)
+def _(d): tag(d, W, GD); badge(d,184,184,34,hx('#E0A92E'),'$')
+@icon('storage', PU)
+def _(d): inbox(d, W, PU)
+@icon('search_reset', RD)
+def _(d): magnifier(d, W); badge(d,184,184,34,RD,'x')
+@icon('sell_all', GD)
+def _(d): coins(d)
+@icon('payout', GD)
+def _(d): coins(d); badge(d,184,184,34,GR,'up')
+@icon('hand_add', GR)
+def _(d): cube(d, W, GR); badge(d,184,184,34,GR,'+')
+@icon('reset', RD)
+def _(d): refresh(d, RD)
+@icon('stats', CY)
+def _(d): chart(d, W, CY)
+@icon('price_base', GD)
+def _(d): coin(d,118,118,70); badge(d,184,184,34,BL,'=')
+@icon('price_min', OR)
+def _(d): coin(d,118,118,70); badge(d,184,184,34,RD,'down')
+@icon('price_max', GR)
+def _(d): coin(d,118,118,70); badge(d,184,184,34,GR,'up')
+@icon('sensitivity', PU)
+def _(d): wave(d, W)
+@icon('recovery', GR)
+def _(d): book(d, W, GR)
+@icon('expected', GD)
+def _(d): hourglass(d, W, GD)
+@icon('ranks', GD)
+def _(d): crown(d, GD, W)
+@icon('team_ranks', RD)
+def _(d): shield(d, W); star(d, RD, 128, 124, 46)
+@icon('gift', GR)
+def _(d): gift(d, W, GR)
+@icon('palette', PU)
+def _(d): palette(d, W)
+
+@icon('classic', GR)
+def _(d):
+    d.polygon([(128,48),(204,90),(128,132),(52,90)], fill=hx('#6BCB4A'))
+    d.polygon([(52,90),(128,132),(128,214),(52,172)], fill=hx('#9B6B43')); d.polygon([(204,90),(128,132),(128,214),(204,172)], fill=hx('#7A5232'))
+    d.polygon([(52,90),(128,132),(128,150),(52,108)], fill=hx('#5BB43C')); d.polygon([(204,90),(128,132),(128,150),(204,108)], fill=hx('#4E9E33'))
 
 tex = PACK+'assets/lazymc/textures/item/gui/'; mod = PACK+'assets/lazymc/models/item/gui/'; itm = PACK+'assets/lazymc/items/gui/'
 for p in (tex, mod, itm): os.makedirs(p, exist_ok=True)
