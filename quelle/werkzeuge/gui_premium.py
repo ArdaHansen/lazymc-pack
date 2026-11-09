@@ -9,13 +9,15 @@ def hx(h): h=h.lstrip('#'); return tuple(int(h[i:i+2],16) for i in (0,2,4))
 OUTLINE = hx('#07080B')   # äußerer Umriss
 SHADOW  = hx('#101217')   # Schattenkanten
 DARK    = hx('#1B1E24')
-SLOT    = hx('#181B21')   # Slot-Innenfläche
+SLOT    = hx('#1E2128')   # Slot-Innenfläche
 PANEL   = hx('#2B2F37')   # Fläche (Graphit)
 PANEL_L = hx('#30353E')   # obere Hälfte minimal heller
-EDGE    = hx('#3F4550')   # Lichtkante innen (dezent)
-PANEL_TOP = hx('#353A44')
-PANEL_BOT = hx('#24272E')
-ACCENT  = hx('#00E5FF')   # Serverfarbe - nur Außenrand
+EDGE    = hx('#4D5460')   # Lichtkante innen (dezent)
+PANEL_TOP = hx('#454B56')
+PANEL_BOT = hx('#33373F')
+ACCENT  = hx('#00E5FF')
+SOFT_CYAN = hx('#5FD8E6')   # gedämpftes Cyan für die Außenkante
+DEEP_CYAN = hx('#1E7E8C')   # Schattenseite der Außenkante   # Serverfarbe - nur Außenrand
 ACCENT2 = hx('#0094FF')
 PLATE   = hx('#B8BFC9')   # Titelplakette (gedämpftes Silber)
 PLATE_D = hx('#9AA2AE')
@@ -48,7 +50,7 @@ def graphite(im, rel):
             v = (r+g+b)/3
             if v < 25:   c = OUTLINE
             elif v < 70: c = SHADOW
-            elif v < 110:c = DARK
+            elif v < 110:c = DEEP_CYAN if transparent_near(x, y, 2) else DARK
             elif v < 150:c = SLOT
             elif v < 215:
                 # Fläche: weicher Verlauf von oben nach unten + feiner gebürsteter Metall-Effekt
@@ -68,10 +70,10 @@ def graphite(im, rel):
                         c = tuple(int(PLATE[i]*(1-tt) + PLATE_D[i]*tt) for i in range(3))
             else:
                 # Lichtkanten: Außenrahmen als neutrale Stahl-Fase (kein Cyan mehr), innen dezent
-                if transparent_near(x, y, 1):
-                    c = hx('#6F7784')
+                if transparent_near(x, y, 2):
+                    c = SOFT_CYAN                # feine helle Cyan-Kante außen
                 elif transparent_near(x, y, 3):
-                    c = hx('#4F5662')
+                    c = hx('#5E6673')
                 else:
                     c = EDGE
             px[x,y] = c + (a,)
