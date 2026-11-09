@@ -450,6 +450,15 @@
         "\ue4e7": -128,
         "\ue4ef": 128
       }
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/lazymc_panda.png",
+      "ascent": 38,
+      "height": 24,
+      "chars": [
+        "\ue003"
+      ]
     }
   ]
 }
