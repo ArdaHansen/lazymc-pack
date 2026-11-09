@@ -1,6 +1,6 @@
 # LazyMC Resource-Pack
 
-Aktuelle Version: **LazyMC_Pack_v21.zip** (in der server.properties eingetragen).
+Aktuelle Version: **LazyMC_Pack_v22.zip** (in der server.properties eingetragen).
 
 Inhalt: Cyan-Menü-Design, LazyMC-Logo (Pausenmenü, Hauptmenü, Tablist), Scoreboard-Rahmen mit Icons
 und Rang-Abzeichen für alle 17 Ränge.
