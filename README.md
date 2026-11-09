@@ -1,6 +1,6 @@
 # LazyMC Resource-Pack
 
-Aktuelle Version: **LazyMC_Pack_v10.zip** (in der server.properties eingetragen).
+Aktuelle Version: **LazyMC_Pack_v11.zip** (in der server.properties eingetragen).
 
 Inhalt: Cyan-Menü-Design, LazyMC-Logo (Pausenmenü, Hauptmenü, Tablist), Scoreboard-Rahmen mit Icons
 und Rang-Abzeichen für alle 17 Ränge.
@@ -16,3 +16,4 @@ dann im Ordner `quelle/werkzeuge` `python3 badges.py` ausführen (benötigt Pill
 Danach den Inhalt von `quelle/pack` als neue ZIP-Datei packen und SHA1 in der server.properties anpassen.
 
 - `quelle/werkzeuge/gui_recolor.py` – färbt die Original-GUIs von Minecraft in das LazyMC-Design um (Farbverläufe oben im Skript änderbar)
+- `quelle/werkzeuge/gui_tech.py` – Tech-Stil der Menüs (v11): dunkles Metall, Neon-Kanten, Nieten, helle Titelplaketten
