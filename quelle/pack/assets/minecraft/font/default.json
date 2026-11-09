@@ -453,15 +453,6 @@
     },
     {
       "type": "bitmap",
-      "file": "minecraft:font/lazymc_panda.png",
-      "ascent": 38,
-      "height": 38,
-      "chars": [
-        "\ue003"
-      ]
-    },
-    {
-      "type": "bitmap",
       "file": "minecraft:font/lazymc_info_l.png",
       "ascent": -10,
       "height": 26,
