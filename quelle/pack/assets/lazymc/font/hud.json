@@ -1,0 +1,98 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/left.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue600"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/mid1.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue601"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/mid2.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue602"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/mid4.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue603"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/mid8.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue604"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/mid16.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue605"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/mid32.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue606"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/hud/right.png",
+      "ascent": 10,
+      "height": 14,
+      "chars": [
+        "\ue607"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        "\ue6f0": -1,
+        "\ue6e0": -1,
+        "\ue6e8": 1,
+        "\ue6e1": -2,
+        "\ue6e9": 2,
+        "\ue6e2": -4,
+        "\ue6ea": 4,
+        "\ue6e3": -8,
+        "\ue6eb": 8,
+        "\ue6e4": -16,
+        "\ue6ec": 16,
+        "\ue6e5": -32,
+        "\ue6ed": 32,
+        "\ue6e6": -64,
+        "\ue6ee": 64,
+        "\ue6e7": -128,
+        "\ue6ef": 128
+      }
+    }
+  ]
+}
