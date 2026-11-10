@@ -468,6 +468,105 @@
       "chars": [
         "\ue005"
       ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_l.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue440"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_r.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue441"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m1.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue442"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m2.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue443"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m4.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue444"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m8.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue445"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m16.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue446"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m32.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue447"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/header/tint_m64.png",
+      "ascent": 25,
+      "height": 26,
+      "chars": [
+        "\ue448"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/coinflip/reel_l.png",
+      "ascent": 13,
+      "height": 71,
+      "chars": [
+        "\ue450"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "minecraft:font/coinflip/reel_r.png",
+      "ascent": 13,
+      "height": 71,
+      "chars": [
+        "\ue451"
+      ]
     }
   ]
 }
