@@ -1,0 +1,62 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/chud/top.png",
+      "ascent": 14,
+      "height": 19,
+      "chars": [
+        "\ue700"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/chud/mid.png",
+      "ascent": 14,
+      "height": 19,
+      "chars": [
+        "\ue701"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/chud/bottom.png",
+      "ascent": 14,
+      "height": 19,
+      "chars": [
+        "\ue702"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/chud/divider.png",
+      "ascent": 14,
+      "height": 19,
+      "chars": [
+        "\ue703"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        "\ue7e0": -1,
+        "\ue7e8": 1,
+        "\ue7e1": -2,
+        "\ue7e9": 2,
+        "\ue7e2": -4,
+        "\ue7ea": 4,
+        "\ue7e3": -8,
+        "\ue7eb": 8,
+        "\ue7e4": -16,
+        "\ue7ec": 16,
+        "\ue7e5": -32,
+        "\ue7ed": 32,
+        "\ue7e6": -64,
+        "\ue7ee": 64,
+        "\ue7e7": -128,
+        "\ue7ef": 128,
+        "\ue7f0": -1
+      }
+    }
+  ]
+}
