@@ -24,6 +24,7 @@ import os
 from PIL import Image, ImageDraw
 
 import gui_deko
+import lcm_icons
 import lcs_icons
 import ll_icons
 from lcs_icons import Canvas, hx
@@ -68,6 +69,7 @@ ACCENT = {
     'teal':   ('#8AF5DC', '#1EC7A3', '#0B6654'),
     'red':    ('#FFA3AE', '#E24A5C', '#7C1A27'),
     'steel':  ('#C9D1DC', '#7D8796', '#3E4552'),
+    'pink':   ('#FFB3E3', '#E05BB8', '#7A2460'),
 }
 
 # ------------------------------------------------------------------ Pixelschrift 5x7
@@ -492,6 +494,7 @@ def panel(img, area, accent, label, pictures, hero=False):
 
 L = lcs_icons
 G = ll_icons
+K = lcm_icons
 
 LAYOUTS = {
     # Wirtschaftszentrale (/unternehmen) - LazyChestShops MainMenu
@@ -518,6 +521,20 @@ LAYOUTS = {
         ((4, 4, 8, 4), 'cyan', 'LOGISTIK', [G.transport], False),
     ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
         deko=[(3, 5, 'coins'), (5, 5, 'gem'), (7, 5, 'torch')]),
+
+    # Kleiderkammer (/kosmetik) - LazyCosmetics MainMenu
+    # Jede Abteilung bekommt ihre eigene Farbe, damit man schon an der Tafel sieht,
+    # wo man ist - dieselbe Farbe fuehrt im Abteilungsmenue weiter.
+    'kosmetik': dict(rows=6, panels=[
+        ((0, 0, 2, 1), 'gold', 'TITEL', [K.titel], False),
+        ((3, 0, 5, 1), 'pink', 'NAMEN', [K.namensfarben], False),
+        ((6, 0, 8, 1), 'purple', 'EFFEKTE', [K.effekte], False),
+        ((0, 2, 3, 3), 'teal', 'SPUREN', [K.spuren], False),
+        ((4, 2, 8, 3), 'green', 'HAUSTIERE', [K.haustiere], False),
+        ((0, 4, 4, 4), 'blue', 'ANSICHT', [K.eye, K.eye_off], False),
+        ((5, 4, 8, 4), 'red', 'ABLEGEN', [], False),
+    ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
+        deko=[(1, 5, 'gem'), (3, 5, 'torch'), (5, 5, 'torch'), (7, 5, 'gem')]),
 
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
     'logistik': dict(rows=6, panels=[
@@ -611,7 +628,8 @@ def main():
     code = 0xE000
     previews = {}
     # Feste Zeichen je Tafel - neue Tafeln hinten anhaengen, nie umnummerieren.
-    fixed = {'wirtschaft': 0xE000, 'logistik': 0xE002, 'unternehmen': 0xE004}
+    fixed = {'wirtschaft': 0xE000, 'logistik': 0xE002, 'unternehmen': 0xE004,
+             'kosmetik': 0xE006}
     for name, spec in LAYOUTS.items():
         img = build_layout(name, spec)
         save_glyph(img, name, fixed[name], providers)

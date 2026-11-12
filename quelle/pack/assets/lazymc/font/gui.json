@@ -59,6 +59,24 @@
     },
     {
       "type": "bitmap",
+      "file": "lazymc:font/gui/kosmetik_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue006"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/kosmetik_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue007"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "lazymc:font/gui/logistik_l.png",
       "ascent": 13,
       "height": 126,
