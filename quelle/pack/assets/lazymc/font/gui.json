@@ -41,6 +41,24 @@
     },
     {
       "type": "bitmap",
+      "file": "lazymc:font/gui/unternehmen_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue004"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/unternehmen_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue005"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "lazymc:font/gui/logistik_l.png",
       "ascent": 13,
       "height": 126,

@@ -1,6 +1,6 @@
 # LazyMC Resource-Pack
 
-Aktuelle Version: **LazyMC_Pack_v28.zip** (in der server.properties eingetragen).
+Aktuelle Version: **LazyMC_Pack_v29.zip** (in der server.properties eingetragen).
 
 Inhalt: Cyan-Menü-Design, LazyMC-Logo (Pausenmenü, Hauptmenü, Tablist), Scoreboard-Rahmen mit Icons
 und Rang-Abzeichen für alle 17 Ränge.
@@ -29,3 +29,7 @@ Danach den Inhalt von `quelle/pack` als neue ZIP-Datei packen und SHA1 in der se
 - Tafeln für alle übrigen Menüs (Rahmen + vertiefte Plätze)
 - 23 neue Logistik-Symbole
 - Server: `resource-pack=` auf `LazyMC_Pack_v28.zip` umstellen, SHA1 `693ed3d13cb02fe7b8fa0e447d0a29922589c9bd`
+
+### v29
+- Tafel `unternehmen` für das Unternehmens-Dashboard (Kasse, Team, Shops, Anteile, Zahlen, Upgrades, Gewinn, Logistik)
+- Server: `resource-pack=` auf `LazyMC_Pack_v29.zip` umstellen, SHA1 `230bf919fcfa3a44a6d5bd8049220cc8440625a2`

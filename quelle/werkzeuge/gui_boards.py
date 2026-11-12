@@ -338,6 +338,18 @@ LAYOUTS = {
         ((4, 4, 8, 4), 'teal', 'SHOPFINDER', [L.price], False),
     ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (7, 5), (8, 5)]),
 
+    # Unternehmens-Dashboard - LazyChestShops CompanyMenu
+    'unternehmen': dict(rows=6, panels=[
+        ((0, 0, 3, 1), 'gold', 'KASSE', [L.treasury, L.dividend], False),
+        ((4, 0, 6, 1), 'orange', 'TEAM', [L.members, L.invite], False),
+        ((7, 0, 8, 1), 'green', 'SHOPS', [L.shops], False),
+        ((0, 2, 2, 3), 'purple', 'ANTEILE', [L.shares], False),
+        ((3, 2, 5, 3), 'blue', 'ZAHLEN', [L.stats], False),
+        ((6, 2, 8, 3), 'teal', 'UPGRADES', [L.upgrade], False),
+        ((0, 4, 3, 4), 'green', 'GEWINN', [L.dividend], False),
+        ((4, 4, 8, 4), 'cyan', 'LOGISTIK', [G.transport], False),
+    ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (8, 5)]),
+
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
     'logistik': dict(rows=6, panels=[
         ((0, 0, 3, 1), 'cyan', 'LAGER', [G.warehouse, G.crate], False),
@@ -408,11 +420,12 @@ def main():
 
     code = 0xE000
     previews = {}
+    # Feste Zeichen je Tafel - neue Tafeln hinten anhaengen, nie umnummerieren.
+    fixed = {'wirtschaft': 0xE000, 'logistik': 0xE002, 'unternehmen': 0xE004}
     for name, spec in LAYOUTS.items():
         img = build_layout(name, spec)
-        save_glyph(img, name, code, providers)
+        save_glyph(img, name, fixed[name], providers)
         previews[name] = img
-        code += 2
     code = 0xE010
     for rows in range(1, 7):
         save_glyph(build_generic(rows, True), f'frame{rows}', code, providers)
