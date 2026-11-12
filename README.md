@@ -1,6 +1,6 @@
 # LazyMC Resource-Pack
 
-Aktuelle Version: **LazyMC_Pack_v29.zip** (in der server.properties eingetragen).
+Aktuelle Version: **LazyMC_Pack_v30.zip** (in der server.properties eingetragen).
 
 Inhalt: Cyan-Menü-Design, LazyMC-Logo (Pausenmenü, Hauptmenü, Tablist), Scoreboard-Rahmen mit Icons
 und Rang-Abzeichen für alle 17 Ränge.
@@ -33,3 +33,10 @@ Danach den Inhalt von `quelle/pack` als neue ZIP-Datei packen und SHA1 in der se
 ### v29
 - Tafel `unternehmen` für das Unternehmens-Dashboard (Kasse, Team, Shops, Anteile, Zahlen, Upgrades, Gewinn, Logistik)
 - Server: `resource-pack=` auf `LazyMC_Pack_v29.zip` umstellen, SHA1 `230bf919fcfa3a44a6d5bd8049220cc8440625a2`
+
+### v30
+- Alle Menü-Tafeln im LAZYMC-V2-Look: Navy, Cyan-Neonkante, Panels als dunkles Glas mit Neonrand, Beschriftung in weißer Steinschrift mit Schein
+- Neuer Inventarteil `bottom1`..`bottom6` (U+E050..U+E05B): die Plugin-Menüs sind jetzt bis unten im selben Look, Vanilla-Truhen bleiben unverändert
+- Kleines LAZYMC-Logo auf der Wirtschaftszentrale (`/unternehmen`)
+- Server: `resource-pack=` auf `LazyMC_Pack_v30.zip` umstellen, SHA1 `dbcb612f6f479786b603380899fa696547bf877f`
+- Benötigt LazyChestShops 1.2.0 und LazyLogistics 1.1.0 (sonst fehlt der Inventarteil, sonst alles kompatibel)

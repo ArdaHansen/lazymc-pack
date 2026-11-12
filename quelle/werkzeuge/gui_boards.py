@@ -37,19 +37,24 @@ W = 176        # Breite eines Truhenmenues in Menuepixeln
 
 # ------------------------------------------------------------------ Farben
 
-OUTLINE = hx('#07080B')
-EDGE_A = hx('#00E5FF')
-EDGE_B = hx('#0094FF')
-BOARD_TOP = hx('#3B414C')
-BOARD_BOT = hx('#272B33')
-STRIP_TOP = hx('#4A5260')
-STRIP_BOT = hx('#353B46')
-INSET = hx('#1A1D23')
-INSET_DARK = hx('#111318')
-INSET_LIGHT = hx('#3A404B')
-SOCKET = hx('#14161B')
-SOCKET_HI = hx('#4A515D')
-SOCKET_LO = hx('#0B0C0F')
+OUTLINE = hx('#02060F')
+EDGE_A = hx('#3FF2FF')     # Neonkante oben
+EDGE_B = hx('#1E8CFF')     # Neonkante unten
+BOARD_TOP = hx('#13285A')
+BOARD_BOT = hx('#0A1638')
+STRIP_TOP = hx('#1C3D7E')
+STRIP_BOT = hx('#0F2452')
+INSET = hx('#081430')
+INSET_DARK = hx('#040A1C')
+INSET_LIGHT = hx('#1F4A8C')
+SOCKET = hx('#0B1A3E')
+SOCKET_HI = hx('#2D5BA8')
+SOCKET_LO = hx('#030814')
+STONE_HI = hx('#FFFFFF')   # Steinschrift wie im LAZYMC-V2-Logo
+STONE_LO = hx('#C9D5EA')
+STONE_CRACK = hx('#93A3C4')
+TEXT_RIM = hx('#050C22')
+LOGO = os.path.join(HERE, '..', 'logo', 'lazymc_v2.png')
 
 ACCENT = {
     #          hell         mitte        dunkel
@@ -117,8 +122,11 @@ def text_width(text):
     return sum(len(FONT[ch][0]) + 1 for ch in text) - 1
 
 
-def draw_text(img, x, y, text, color, outline):
-    """Schreibt Text in Menuepixeln mit 1 Pixel Umriss und Schatten nach unten."""
+def draw_text(img, x, y, text, color, outline, glow=None):
+    """
+    Schreibt Text in Menuepixeln: Steinbuchstaben (oben weiss, unten heller Stein, feine Risse),
+    dunkler Rand mit Schatten nach unten und optional ein Neon-Schein in der Panelfarbe.
+    """
     px = img.load()
     cells = set()
     cx = x
@@ -127,17 +135,40 @@ def draw_text(img, x, y, text, color, outline):
         for gy, row in enumerate(glyph):
             for gx, bit in enumerate(row):
                 if bit == '#':
-                    cells.add((cx + gx, y + gy))
+                    cells.add((cx + gx, y + gy, gy))
         cx += len(glyph[0]) + 1
+    solid = {(a, b) for (a, b, _) in cells}
     ring = set()
-    for (gx, gy) in cells:
+    for (gx, gy) in solid:
         for dx in (-1, 0, 1):
             for dy in (-1, 0, 1, 2):
                 ring.add((gx + dx, gy + dy))
-    for (gx, gy) in ring - cells:
+    if glow is not None:
+        halo = set()
+        for (gx, gy) in ring:
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    halo.add((gx + dx, gy + dy))
+        for (gx, gy) in halo - ring - solid:
+            blend(px, img.size, gx, gy, glow, 0.45)
+    for (gx, gy) in ring - solid:
         put(px, img.size, gx, gy, outline)
-    for (gx, gy) in cells:
-        put(px, img.size, gx, gy, color)
+    for (gx, gy, row) in cells:
+        col = color if color != STONE_HI else (STONE_HI if row < 4 else STONE_LO)
+        if color == STONE_HI and (gx * 7 + gy * 3) % 13 == 0:
+            col = STONE_CRACK
+        put(px, img.size, gx, gy, col)
+
+
+def blend(px, size, x, y, col, t):
+    """Mischt einen Menuepixel mit einer Farbe (fuer Glow)."""
+    for dx in range(S):
+        for dy in range(S):
+            tx, ty = x * S + dx, y * S + dy
+            if 0 <= tx < size[0] and 0 <= ty < size[1]:
+                cur = px[tx, ty]
+                if cur[3]:
+                    px[tx, ty] = mix(cur, col, t)
 
 
 def put(px, size, x, y, col):
@@ -167,38 +198,98 @@ def gradient(img, x0, y0, x1, y1, top, bottom):
 
 # ------------------------------------------------------------------ Bausteine
 
-def board(rows, strip=True):
-    """Die Grundtafel: Umriss, Cyan-Kante, Graphit, Titelleiste und dunkler Innenbereich."""
-    height = 17 + rows * 18 + 1
-    img = Image.new('RGBA', (W * S, height * S), (0, 0, 0, 0))
+def neon_frame(img, height, top=True, bottom=True, ca=None, cb=None):
+    """Dunkler Umriss, Neonkante (Cyan nach Blau) und ein schwacher Schein nach innen."""
     px = img.load()
-    gradient(img, 0, 0, W - 1, height - 1, BOARD_TOP, BOARD_BOT)
-    # Umriss mit abgerundeten Ecken
-    rect(img, 0, 0, W - 1, 0, OUTLINE)
-    rect(img, 0, height - 1, W - 1, height - 1, OUTLINE)
     rect(img, 0, 0, 0, height - 1, OUTLINE)
     rect(img, W - 1, 0, W - 1, height - 1, OUTLINE)
-    for (cx, cy) in ((0, 0), (W - 1, 0), (0, height - 1), (W - 1, height - 1)):
+    if top:
+        rect(img, 0, 0, W - 1, 0, OUTLINE)
+    if bottom:
+        rect(img, 0, height - 1, W - 1, height - 1, OUTLINE)
+    for y in range(1 if top else 0, height - 1 if bottom else height):
+        t = y / max(1, height - 1)
+        edge = mix(ca or EDGE_A, cb or EDGE_B, t)
+        for x in (1, W - 2):
+            put(px, img.size, x, y, edge)
+        for x in (2, W - 3):
+            blend(px, img.size, x, y, edge, 0.35)
+    if top:
+        rect(img, 1, 1, W - 2, 1, EDGE_A)
+        for x in range(2, W - 2):
+            blend(px, img.size, x, 2, EDGE_A, 0.30)
+    if bottom:
+        rect(img, 1, height - 2, W - 2, height - 2, EDGE_B)
+        for x in range(2, W - 2):
+            blend(px, img.size, x, height - 3, EDGE_B, 0.30)
+    corners = []
+    if top:
+        corners += [(0, 0), (W - 1, 0)]
+    if bottom:
+        corners += [(0, height - 1), (W - 1, height - 1)]
+    for (cx, cy) in corners:
         put(px, img.size, cx, cy, (0, 0, 0, 0))
-    for y in range(1, height - 1):
-        t = y / max(1, height - 2)
-        put(px, img.size, 1, y, mix(EDGE_A, EDGE_B, t))
-        put(px, img.size, W - 2, y, mix(EDGE_A, EDGE_B, t))
-    for x in range(1, W - 1):
-        put(px, img.size, x, 1, EDGE_A)
-    # Titelleiste
+
+
+def rivet(img, x, y):
+    """Kleine Neon-Raute als Niete."""
+    px = img.load()
+    put(px, img.size, x, y, EDGE_A)
+    for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        blend(px, img.size, x + dx, y + dy, EDGE_A, 0.45)
+
+
+def board(rows, strip=True):
+    """Die Grundtafel: Navy mit Neonkante, Titelleiste und dunkler Innenbereich."""
+    height = 17 + rows * 18 + 1
+    img = Image.new('RGBA', (W * S, height * S), (0, 0, 0, 0))
+    gradient(img, 0, 0, W - 1, height - 1, BOARD_TOP, BOARD_BOT)
+    # Unten offen - der Inventarteil schliesst nahtlos an.
+    neon_frame(img, height, top=True, bottom=False, cb=mix(EDGE_A, EDGE_B, 0.5))
     if strip:
-        gradient(img, 2, 2, W - 3, 15, STRIP_TOP, STRIP_BOT)
-        rect(img, 2, 16, W - 3, 16, OUTLINE)
-        rect(img, 2, 2, W - 3, 2, hx('#5E6878'))
-        for (nx, ny) in ((4, 4), (W - 5, 4), (4, 13), (W - 5, 13)):
-            put(px, img.size, nx, ny, hx('#8A94A5'))
-            put(px, img.size, nx + 1, ny + 1, hx('#22262D'))
+        gradient(img, 3, 3, W - 4, 15, STRIP_TOP, STRIP_BOT)
+        rect(img, 3, 16, W - 4, 16, EDGE_B)
+        px = img.load()
+        for x in range(3, W - 3):
+            blend(px, img.size, x, 15, EDGE_B, 0.35)
+        rect(img, 3, 3, W - 4, 3, mix(STRIP_TOP, EDGE_A, 0.35))
+        for (nx, ny) in ((6, 9), (W - 7, 9)):
+            rivet(img, nx, ny)
     # Innenbereich der Felder
-    rect(img, 6, 16, W - 7, 17 + rows * 18, INSET_DARK)
+    rect(img, 6, 17, W - 7, 17 + rows * 18, INSET_DARK)
     rect(img, 7, 17, W - 8, 16 + rows * 18, INSET)
     rect(img, 6, 17 + rows * 18, W - 7, 17 + rows * 18, INSET_LIGHT)
-    rect(img, W - 7, 16, W - 7, 17 + rows * 18, INSET_LIGHT)
+    rect(img, W - 7, 17, W - 7, 17 + rows * 18, INSET_LIGHT)
+    return img
+
+
+BOTTOM_H = 95   # Inventarteil: von 18*Reihen+18 bis zum Ende des Menues
+
+
+def bottom():
+    """Der Inventarteil unter jeder Tafel - Steinplatte fuer 'Inventar', 27 + 9 Plaetze."""
+    img = Image.new('RGBA', (W * S, BOTTOM_H * S), (0, 0, 0, 0))
+    gradient(img, 0, 0, W - 1, BOTTOM_H - 1, BOARD_BOT, hx('#07102A'))
+    neon_frame(img, BOTTOM_H, top=False, bottom=True, ca=mix(EDGE_A, EDGE_B, 0.5))
+    # helle Steinplatte hinter der Beschriftung 'Inventar' (dunkle Vanilla-Schrift bleibt lesbar)
+    gradient(img, 6, 1, W - 7, 10, hx('#E6EDF8'), hx('#B7C5DE'))
+    rect(img, 6, 1, W - 7, 1, hx('#FFFFFF'))
+    rect(img, 6, 10, W - 7, 10, hx('#8D9EBE'))
+    rect(img, 6, 11, W - 7, 11, EDGE_B)
+    px = img.load()
+    for (x, y) in ((W - 30, 4), (W - 26, 7), (W - 50, 6), (W - 70, 3)):
+        put(px, img.size, x, y, hx('#A3B3D0'))          # feine Risse im Stein
+        put(px, img.size, x + 1, y + 1, hx('#A3B3D0'))
+    rivet(img, W - 12, 6)
+    for (y0, count) in ((12, 3), (70, 1)):
+        rect(img, 6, y0 - 1, W - 7, y0 + 18 * count, INSET_DARK)
+        rect(img, 6, y0 + 18 * count, W - 7, y0 + 18 * count, INSET_LIGHT)
+        for r in range(count):
+            for c in range(9):
+                x0, y = 7 + 18 * c, y0 + 18 * r
+                rect(img, x0, y, x0 + 17, y + 17, SOCKET_LO)
+                rect(img, x0 + 1, y + 1, x0 + 17, y + 17, SOCKET_HI)
+                rect(img, x0 + 1, y + 1, x0 + 16, y + 16, SOCKET)
     return img
 
 
@@ -244,9 +335,24 @@ def art(draw_fn, scale):
     return out
 
 
+def logo(width):
+    """Das LAZYMC-V2-Logo, auf 'width' Menuepixel verkleinert (in doppelter Aufloesung)."""
+    src = Image.open(LOGO).convert('RGBA')
+    w = width * S
+    h = round(src.size[1] * w / src.size[0])
+    small = src.resize((w, h), Image.LANCZOS)
+    # weiche Kanten haerter machen, damit es zum Pixel-Look passt
+    q = small.load()
+    for yy in range(h):
+        for xx in range(w):
+            r, g, b, a = q[xx, yy]
+            q[xx, yy] = (r, g, b, 0 if a < 90 else 255)
+    return small
+
+
 def panel(img, area, accent, label, pictures, hero=False):
     """
-    Ein farbiges Panel ueber mehreren Feldern - wie die Kacheln im Marktplatz.
+    Ein Panel ueber mehreren Feldern - dunkles Glas mit Neonrand in der Panelfarbe.
 
     area     (c0, r0, c1, r1)
     pictures Liste von Zeichenfunktionen, die auf einem Regalbrett stehen
@@ -255,61 +361,65 @@ def panel(img, area, accent, label, pictures, hero=False):
     x0, y0, x1, y1 = cell_box(*area)
     x0, y0, x1, y1 = x0 + 1, y0 + 1, x1 - 1, y1 - 1
     px = img.load()
-    # Umriss mit runden Ecken
     rect(img, x0, y0, x1, y1, OUTLINE)
-    gradient(img, x0 + 1, y0 + 1, x1 - 1, y1 - 1, mix(light, mid, 0.35), mix(mid, dark, 0.55))
+    fill_top = mix(BOARD_TOP, mid, 0.34)
+    fill_bot = mix(INSET, dark, 0.50)
+    gradient(img, x0 + 1, y0 + 1, x1 - 1, y1 - 1, fill_top, fill_bot)
+    # Neonrand
+    rect(img, x0 + 1, y0 + 1, x1 - 1, y0 + 1, light)
+    rect(img, x0 + 1, y0 + 1, x0 + 1, y1 - 1, mix(light, mid, 0.4))
+    rect(img, x1 - 1, y0 + 1, x1 - 1, y1 - 1, mid)
+    rect(img, x0 + 1, y1 - 1, x1 - 1, y1 - 1, mix(mid, dark, 0.4))
+    for xx in range(x0 + 2, x1 - 1):
+        blend(px, img.size, xx, y0 + 2, light, 0.30)
+        blend(px, img.size, xx, y1 - 2, mid, 0.20)
+    for yy in range(y0 + 2, y1 - 1):
+        blend(px, img.size, x0 + 2, yy, light, 0.25)
+        blend(px, img.size, x1 - 2, yy, mid, 0.25)
     for (cx, cy) in ((x0, y0), (x1, y0), (x0, y1), (x1, y1)):
         put(px, img.size, cx, cy, INSET)
-    # Glanzkante oben, Schatten unten
-    rect(img, x0 + 1, y0 + 1, x1 - 1, y0 + 1, mix(light, (255, 255, 255, 255), 0.35))
-    rect(img, x0 + 1, y0 + 1, x0 + 1, y1 - 1, mix(light, mid, 0.2))
-    rect(img, x0 + 1, y1 - 1, x1 - 1, y1 - 1, dark)
-    rect(img, x1 - 1, y0 + 1, x1 - 1, y1 - 1, mix(mid, dark, 0.7))
-    # feines Rautenmuster als Struktur
-    for yy in range(y0 + 3, y1 - 2):
-        for xx in range(x0 + 3, x1 - 2):
+    # feines Punktraster wie ein Display
+    for yy in range(y0 + 4, y1 - 3):
+        for xx in range(x0 + 4, x1 - 3):
             if (xx + yy) % 6 == 0 and (xx - yy) % 6 == 0:
-                put(px, img.size, xx, yy, mix(light, mid, 0.5))
+                blend(px, img.size, xx, yy, mid, 0.40)
 
     height = y1 - y0 + 1
     width = x1 - x0 + 1
     single_row = height < 24
 
     if single_row:
-        # Leiste: Bild links, Text daneben
         if pictures:
             pic = art(pictures[0], 1)
             img.alpha_composite(pic, ((x0 + 1) * S, (y0 + 0) * S))
-        tx = x0 + 19 if pictures else x0 + (width - text_width(label)) // 2
-        if pictures and tx + text_width(label) > x1 - 2:
-            tx = x1 - 2 - text_width(label)
-        if pictures:
-            tx = max(tx, x0 + 19)
             free = x1 - 2 - (x0 + 19)
             tx = x0 + 19 + max(0, (free - text_width(label)) // 2)
-        draw_text(img, tx, y0 + (height - 7) // 2, label, hx('#FFFFFF'), dark)
+        else:
+            tx = x0 + (width - text_width(label)) // 2
+        draw_text(img, tx, y0 + (height - 7) // 2, label, STONE_HI, TEXT_RIM, mid)
         return
 
-    # Beschriftung oben mittig
     tx = x0 + (width - text_width(label)) // 2
-    draw_text(img, tx, y0 + 3, label, hx('#FFFFFF'), dark)
+    draw_text(img, tx, y0 + 4, label, STONE_HI, TEXT_RIM, mid)
 
-    # Regalbrett
+    # Regalbrett als Neonlinie
     shelf_y = y1 - 4
     rect(img, x0 + 3, shelf_y, x1 - 3, shelf_y + 1, mix(dark, OUTLINE, 0.4))
-    rect(img, x0 + 3, shelf_y, x1 - 3, shelf_y, mix(light, mid, 0.3))
+    rect(img, x0 + 3, shelf_y, x1 - 3, shelf_y, light)
 
     if not pictures:
         return
     if hero:
-        pic = art(pictures[0], 3)            # 96 Texturpixel = 48 Menuepixel
-        size = 48
-        px_x = x0 + (width - size) // 2
-        img.alpha_composite(pic, (px_x * S, (shelf_y - size) * S))
-        # kleine Begleiter links und rechts
+        # Kleines LAZYMC-Logo unter der Beschriftung, darunter das Unternehmen
+        mark = logo(width - 10)
+        mh = mark.size[1] // S
+        img.alpha_composite(mark, ((x0 + 5) * S, (y0 + 14) * S))
+        size = 32
+        pic = art(pictures[0], 2)
+        img.alpha_composite(pic, ((x0 + (width - size) // 2) * S, (shelf_y - size) * S))
         for idx, extra in enumerate(pictures[1:3]):
             small = art(extra, 1)
-            ex = x0 + 3 if idx == 0 else x1 - 3 - 16
+            ex = x0 + 4 if idx == 0 else x1 - 4 - 16
             img.alpha_composite(small, (ex * S, (shelf_y - 16) * S))
         return
     count = len(pictures)
@@ -385,15 +495,15 @@ def build_generic(rows, framed):
     if framed and rows > 2:
         # Zierleiste im Rahmen, damit er nicht leer wirkt
         x0, y0, x1, y1 = cell_box(0, 0, 8, 0)
-        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 9, hx('#2E333C'))
-        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 8, hx('#444B57'))
+        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 9, INSET_DARK)
+        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 8, EDGE_B)
         x0, y0, x1, y1 = cell_box(0, rows - 1, 8, rows - 1)
-        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 9, hx('#2E333C'))
-        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 8, hx('#444B57'))
+        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 9, INSET_DARK)
+        rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 8, EDGE_B)
     return img
 
 
-def save_glyph(img, key, first_codepoint, providers):
+def save_glyph(img, key, first_codepoint, providers, ascent=13):
     os.makedirs(FONT_TEX, exist_ok=True)
     half = img.size[0] // 2
     height = img.size[1] // S
@@ -405,7 +515,7 @@ def save_glyph(img, key, first_codepoint, providers):
         ch = chr(first_codepoint + idx)
         chars.append(ch)
         providers.append({"type": "bitmap", "file": f"lazymc:font/gui/{file}",
-                          "ascent": 13, "height": height, "chars": [ch]})
+                          "ascent": ascent, "height": height, "chars": [ch]})
     GLYPHS[key] = (chars[0], chars[1], height)
 
 
@@ -434,6 +544,13 @@ def main():
     for rows in range(1, 7):
         save_glyph(build_generic(rows, False), f'plain{rows}', code, providers)
         code += 2
+    # Inventarteil je Reihenzahl: beginnt 18*Reihen+18 Pixel unter dem Tafelanfang
+    code = 0xE050
+    low = bottom()
+    for rows in range(1, 7):
+        save_glyph(low, f'bottom{rows}', code, providers, ascent=13 - (18 * rows + 18))
+        code += 2
+    previews['bottom'] = low
     os.makedirs(os.path.dirname(FONT_FILE), exist_ok=True)
     with open(FONT_FILE, 'w', encoding='utf-8') as f:
         json.dump({"providers": providers}, f, indent=2, ensure_ascii=True)

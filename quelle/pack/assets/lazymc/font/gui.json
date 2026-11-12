@@ -290,6 +290,114 @@
       "chars": [
         "\ue03b"
       ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom1_l.png",
+      "ascent": -23,
+      "height": 95,
+      "chars": [
+        "\ue050"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom1_r.png",
+      "ascent": -23,
+      "height": 95,
+      "chars": [
+        "\ue051"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom2_l.png",
+      "ascent": -41,
+      "height": 95,
+      "chars": [
+        "\ue052"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom2_r.png",
+      "ascent": -41,
+      "height": 95,
+      "chars": [
+        "\ue053"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom3_l.png",
+      "ascent": -59,
+      "height": 95,
+      "chars": [
+        "\ue054"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom3_r.png",
+      "ascent": -59,
+      "height": 95,
+      "chars": [
+        "\ue055"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom4_l.png",
+      "ascent": -77,
+      "height": 95,
+      "chars": [
+        "\ue056"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom4_r.png",
+      "ascent": -77,
+      "height": 95,
+      "chars": [
+        "\ue057"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom5_l.png",
+      "ascent": -95,
+      "height": 95,
+      "chars": [
+        "\ue058"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom5_r.png",
+      "ascent": -95,
+      "height": 95,
+      "chars": [
+        "\ue059"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom6_l.png",
+      "ascent": -113,
+      "height": 95,
+      "chars": [
+        "\ue05a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/bottom6_r.png",
+      "ascent": -113,
+      "height": 95,
+      "chars": [
+        "\ue05b"
+      ]
     }
   ]
 }
