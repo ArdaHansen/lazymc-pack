@@ -119,46 +119,91 @@ FONT = {
 }
 
 
+# Schrift der Plaketten (5 x 5, wie "WIRTSCHAFT" oben) - wird aus den Plaketten-Kacheln gelesen,
+# damit Titel und Panel-Beschriftungen genau gleich aussehen.
+HEADER_DIR = os.path.join(HERE, '..', 'pack', 'assets', 'minecraft', 'textures', 'font', 'header')
+_HEADER_NAMES = {'Ä': 'ae', 'Ö': 'oe', 'Ü': 'ue', '&': 'and', '-': 'minus', '+': 'plus'}
+_PLATE = {}
+
+
+def plate_glyph(ch):
+    """5 Zeilen Bitmuster eines Zeichens aus der Plakettenschrift."""
+    if ch in _PLATE:
+        return _PLATE[ch]
+    if ch == ' ':
+        rows = ['...'] * 5
+    elif ch == '!':
+        rows = ['#', '#', '#', '.', '#']
+    elif ch in 'ÄÖÜ':
+        # Punkte eine Reihe ueber dem Buchstaben, darunter der normale Buchstabe
+        base = plate_glyph({'Ä': 'A', 'Ö': 'O', 'Ü': 'U'}[ch])
+        rows = ['.#.#.'] + base
+    else:
+        name = _HEADER_NAMES.get(ch, 'n' + ch if ch.isdigit() else ch.lower())
+        im = Image.open(os.path.join(HEADER_DIR, f'c_{name}.png')).convert('RGBA')
+        px = im.load()
+        white = [(x, y) for y in range(im.size[1]) for x in range(im.size[0])
+                 if px[x, y][3] and sum(px[x, y][:3]) > 600]
+        x0 = min(p[0] for p in white)
+        x1 = max(p[0] for p in white)
+        y1 = max(p[1] for p in white)
+        top = 8   # Oberkante der Grossbuchstaben in den Kacheln
+        rows = []
+        for uy in range(5):
+            yy = top + uy * 3
+            rows.append(''.join('#' if yy <= y1 and px[x0 + ux * 3, yy][3]
+                                and sum(px[x0 + ux * 3, yy][:3]) > 600 else '.'
+                                for ux in range((x1 - x0) // 3 + 1)))
+    _PLATE[ch] = rows
+    return rows
+
+
+TEXT_H = 5   # Hoehe der Beschriftung in Menuepixeln
+
+
 def text_width(text):
-    return sum(len(FONT[ch][0]) + 1 for ch in text) - 1
+    return sum(len(plate_glyph(ch)[0]) + 1 for ch in text) - 1
 
 
 def draw_text(img, x, y, text, color, outline, glow=None):
     """
-    Schreibt Text in Menuepixeln: Steinbuchstaben (oben weiss, unten heller Stein, feine Risse),
-    dunkler Rand mit Schatten nach unten und optional ein Neon-Schein in der Panelfarbe.
+    Beschriftung in der Plakettenschrift: weisse Buchstaben (unterste Reihe leicht blaugrau),
+    ein feiner Rand von einem Texturpixel und ein Schatten darunter in der Panelfarbe.
     """
     px = img.load()
-    cells = set()
+    fill = {}
     cx = x
     for ch in text:
-        glyph = FONT[ch]
+        glyph = plate_glyph(ch)
+        lift = len(glyph) - 5          # Umlaute ragen eine Reihe nach oben
         for gy, row in enumerate(glyph):
             for gx, bit in enumerate(row):
                 if bit == '#':
-                    cells.add((cx + gx, y + gy, gy))
+                    for dx in range(S):
+                        for dy in range(S):
+                            fill[((cx + gx) * S + dx, (y + gy - lift) * S + dy)] = gy - lift
         cx += len(glyph[0]) + 1
-    solid = {(a, b) for (a, b, _) in cells}
-    ring = set()
-    for (gx, gy) in solid:
+    solid = set(fill)
+    rim = set()
+    for (tx, ty) in solid:
         for dx in (-1, 0, 1):
-            for dy in (-1, 0, 1, 2):
-                ring.add((gx + dx, gy + dy))
-    if glow is not None:
-        halo = set()
-        for (gx, gy) in ring:
-            for dx in (-1, 0, 1):
-                for dy in (-1, 0, 1):
-                    halo.add((gx + dx, gy + dy))
-        for (gx, gy) in halo - ring - solid:
-            blend(px, img.size, gx, gy, glow, 0.45)
-    for (gx, gy) in ring - solid:
-        put(px, img.size, gx, gy, outline)
-    for (gx, gy, row) in cells:
-        col = color if color != STONE_HI else (STONE_HI if row < 4 else STONE_LO)
-        if color == STONE_HI and (gx * 7 + gy * 3) % 13 == 0:
-            col = STONE_CRACK
-        put(px, img.size, gx, gy, col)
+            for dy in (-1, 0, 1):
+                rim.add((tx + dx, ty + dy))
+    rim -= solid
+    shadow = {(tx, ty + 1) for (tx, ty) in rim} - rim - solid
+    shade = mix(outline, glow, 0.45) if glow is not None else outline
+    w, h = img.size
+
+    def dot(p, col):
+        if 0 <= p[0] < w and 0 <= p[1] < h:
+            px[p] = col
+
+    for p in shadow:
+        dot(p, shade)
+    for p in rim:
+        dot(p, outline)
+    for p, row in fill.items():
+        dot(p, STONE_LO if (color == STONE_HI and row == 4) else color)
 
 
 def blend(px, size, x, y, col, t):
@@ -408,7 +453,7 @@ def panel(img, area, accent, label, pictures, hero=False):
             tx = x0 + 19 + max(0, (free - text_width(label)) // 2)
         else:
             tx = x0 + (width - text_width(label)) // 2
-        draw_text(img, tx, y0 + (height - 7) // 2, label, STONE_HI, TEXT_RIM, mid)
+        draw_text(img, tx, y0 + (height - TEXT_H) // 2, label, STONE_HI, TEXT_RIM, mid)
         return
 
     tx = x0 + (width - text_width(label)) // 2

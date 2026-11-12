@@ -1,6 +1,6 @@
 # LazyMC Resource-Pack
 
-Aktuelle Version: **LazyMC_Pack_v31.zip** (in der server.properties eingetragen).
+Aktuelle Version: **LazyMC_Pack_v32.zip** (in der server.properties eingetragen).
 
 Inhalt: Cyan-Menü-Design, LazyMC-Logo (Pausenmenü, Hauptmenü, Tablist), Scoreboard-Rahmen mit Icons
 und Rang-Abzeichen für alle 17 Ränge.
@@ -46,3 +46,8 @@ Danach den Inhalt von `quelle/pack` als neue ZIP-Datei packen und SHA1 in der se
 - Rahmen-Menüs mit Neonleisten und Nieten rundum
 - Keine Plugin-Änderung nötig (gleiche Zeichen wie v30)
 - Server: `resource-pack=` auf `LazyMC_Pack_v31.zip` umstellen, SHA1 `dc9c53046af3d686d4bad63251b384af92d6d1a9`
+
+### v32
+- Panel-Beschriftungen in derselben Schrift wie die Titel-Plaketten, mit feinem Rand und Schatten statt der groben Steinschrift; Umlaut-Punkte über dem Buchstaben
+- Keine Plugin-Änderung nötig
+- Server: `resource-pack=` auf `LazyMC_Pack_v32.zip` umstellen, SHA1 `bf8324861580276ce0f4c61ac331045b2e14cc2d`
