@@ -1,0 +1,277 @@
+{
+  "providers": [
+    {
+      "type": "space",
+      "advances": {
+        "\uf801": -1,
+        "\uf811": 1,
+        "\uf802": -2,
+        "\uf812": 2,
+        "\uf803": -4,
+        "\uf813": 4,
+        "\uf804": -8,
+        "\uf814": 8,
+        "\uf805": -16,
+        "\uf815": 16,
+        "\uf806": -32,
+        "\uf816": 32,
+        "\uf807": -64,
+        "\uf817": 64,
+        "\uf808": -128,
+        "\uf818": 128
+      }
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/wirtschaft_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue000"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/wirtschaft_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue001"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/logistik_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue002"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/logistik_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue003"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame1_l.png",
+      "ascent": 13,
+      "height": 36,
+      "chars": [
+        "\ue010"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame1_r.png",
+      "ascent": 13,
+      "height": 36,
+      "chars": [
+        "\ue011"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame2_l.png",
+      "ascent": 13,
+      "height": 54,
+      "chars": [
+        "\ue012"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame2_r.png",
+      "ascent": 13,
+      "height": 54,
+      "chars": [
+        "\ue013"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame3_l.png",
+      "ascent": 13,
+      "height": 72,
+      "chars": [
+        "\ue014"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame3_r.png",
+      "ascent": 13,
+      "height": 72,
+      "chars": [
+        "\ue015"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame4_l.png",
+      "ascent": 13,
+      "height": 90,
+      "chars": [
+        "\ue016"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame4_r.png",
+      "ascent": 13,
+      "height": 90,
+      "chars": [
+        "\ue017"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame5_l.png",
+      "ascent": 13,
+      "height": 108,
+      "chars": [
+        "\ue018"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame5_r.png",
+      "ascent": 13,
+      "height": 108,
+      "chars": [
+        "\ue019"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame6_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue01a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/frame6_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue01b"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain1_l.png",
+      "ascent": 13,
+      "height": 36,
+      "chars": [
+        "\ue030"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain1_r.png",
+      "ascent": 13,
+      "height": 36,
+      "chars": [
+        "\ue031"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain2_l.png",
+      "ascent": 13,
+      "height": 54,
+      "chars": [
+        "\ue032"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain2_r.png",
+      "ascent": 13,
+      "height": 54,
+      "chars": [
+        "\ue033"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain3_l.png",
+      "ascent": 13,
+      "height": 72,
+      "chars": [
+        "\ue034"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain3_r.png",
+      "ascent": 13,
+      "height": 72,
+      "chars": [
+        "\ue035"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain4_l.png",
+      "ascent": 13,
+      "height": 90,
+      "chars": [
+        "\ue036"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain4_r.png",
+      "ascent": 13,
+      "height": 90,
+      "chars": [
+        "\ue037"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain5_l.png",
+      "ascent": 13,
+      "height": 108,
+      "chars": [
+        "\ue038"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain5_r.png",
+      "ascent": 13,
+      "height": 108,
+      "chars": [
+        "\ue039"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain6_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue03a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/plain6_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue03b"
+      ]
+    }
+  ]
+}
