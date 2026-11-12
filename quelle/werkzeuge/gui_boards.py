@@ -23,6 +23,7 @@ import os
 
 from PIL import Image, ImageDraw
 
+import gui_deko
 import lcs_icons
 import ll_icons
 from lcs_icons import Canvas, hx
@@ -255,6 +256,9 @@ def board(rows, strip=True):
         rect(img, 3, 3, W - 4, 3, mix(STRIP_TOP, EDGE_A, 0.35))
         for (nx, ny) in ((6, 9), (W - 7, 9)):
             rivet(img, nx, ny)
+        # rechts in der Titelleiste: Spitzhacke und Edelstein wie im Logo
+        deko(img, 'pickaxe', W - 30, 5)
+        deko(img, 'gem', W - 20, 5)
     # Innenbereich der Felder
     rect(img, 6, 17, W - 7, 17 + rows * 18, INSET_DARK)
     rect(img, 7, 17, W - 8, 16 + rows * 18, INSET)
@@ -277,9 +281,9 @@ def bottom():
     rect(img, 6, 10, W - 7, 10, hx('#8D9EBE'))
     rect(img, 6, 11, W - 7, 11, EDGE_B)
     px = img.load()
-    for (x, y) in ((W - 30, 4), (W - 26, 7), (W - 50, 6), (W - 70, 3)):
-        put(px, img.size, x, y, hx('#A3B3D0'))          # feine Risse im Stein
-        put(px, img.size, x + 1, y + 1, hx('#A3B3D0'))
+    # kleine Figuren auf der Steinplatte, rechts neben 'Inventar'
+    for idx, name in enumerate(('grass', 'pickaxe', 'chest', 'coins', 'gem', 'torch')):
+        deko(img, name, 64 + idx * 16, 2)
     rivet(img, W - 12, 6)
     for (y0, count) in ((12, 3), (70, 1)):
         rect(img, 6, y0 - 1, W - 7, y0 + 18 * count, INSET_DARK)
@@ -291,6 +295,14 @@ def bottom():
                 rect(img, x0 + 1, y + 1, x0 + 17, y + 17, SOCKET_HI)
                 rect(img, x0 + 1, y + 1, x0 + 16, y + 16, SOCKET)
     return img
+
+
+def deko(img, name, x, y, scale=1):
+    """Setzt eine kleine Figur (8 x 8 Menuepixel, bei scale=2 ein ganzes Feld)."""
+    fig = gui_deko.figure(name)
+    if scale != 1:
+        fig = fig.resize((16 * scale, 16 * scale), Image.NEAREST)
+    img.alpha_composite(fig, (x * S, y * S))
 
 
 def cell_box(c0, r0, c1, r1):
@@ -446,7 +458,8 @@ LAYOUTS = {
         ((6, 2, 8, 3), 'purple', 'ANTEILE', [L.shares, L.dividend], False),
         ((0, 4, 3, 4), 'blue', 'LOGISTIK', [G.transport], False),
         ((4, 4, 8, 4), 'teal', 'SHOPFINDER', [L.price], False),
-    ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (7, 5), (8, 5)]),
+    ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (7, 5), (8, 5)],
+        deko=[(3, 5, 'torch'), (5, 5, 'torch')]),
 
     # Unternehmens-Dashboard - LazyChestShops CompanyMenu
     'unternehmen': dict(rows=6, panels=[
@@ -458,7 +471,8 @@ LAYOUTS = {
         ((6, 2, 8, 3), 'teal', 'UPGRADES', [L.upgrade], False),
         ((0, 4, 3, 4), 'green', 'GEWINN', [L.dividend], False),
         ((4, 4, 8, 4), 'cyan', 'LOGISTIK', [G.transport], False),
-    ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (8, 5)]),
+    ], sockets=[(0, 5), (1, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
+        deko=[(3, 5, 'coins'), (5, 5, 'gem'), (7, 5, 'torch')]),
 
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
     'logistik': dict(rows=6, panels=[
@@ -469,7 +483,8 @@ LAYOUTS = {
         ((0, 4, 2, 4), 'purple', 'NETZWERK', [], False),
         ((3, 4, 5, 4), 'blue', 'STATISTIK', [], False),
         ((6, 4, 8, 4), 'gold', 'UPGRADES', [], False),
-    ], sockets=[(0, 5), (2, 5), (3, 5), (4, 5), (5, 5), (6, 5), (8, 5)]),
+    ], sockets=[(0, 5), (2, 5), (3, 5), (4, 5), (5, 5), (6, 5), (8, 5)],
+        deko=[(1, 5, 'chest'), (7, 5, 'grass')]),
 }
 
 GLYPHS = {}   # Name -> (Zeichen links, Zeichen rechts, Hoehe)
@@ -481,6 +496,9 @@ def build_layout(name, spec):
         panel(img, area, accent, label, pictures, hero)
     for (c, r) in spec['sockets']:
         socket(img, c, r)
+    for (c, r, name) in spec.get('deko', []):
+        x0, y0, _, _ = cell_box(c, r, c, r)
+        deko(img, name, x0 + 5, y0 + 5)
     return img
 
 
@@ -500,6 +518,23 @@ def build_generic(rows, framed):
         x0, y0, x1, y1 = cell_box(0, rows - 1, 8, rows - 1)
         rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 9, INSET_DARK)
         rect(img, x0 + 3, y0 + 8, x1 - 3, y0 + 8, EDGE_B)
+        # seitliche Leisten und Nieten auf den Feldgrenzen - liegen nie unter einem Knopf
+        top = cell_box(0, 0, 0, 0)[1] + 8
+        bottom_line = cell_box(0, rows - 1, 0, rows - 1)[1] + 8
+        for xs in (cell_box(0, 0, 0, 0)[0] + 8, cell_box(8, 0, 8, 0)[0] + 9):
+            rect(img, xs, top, xs, bottom_line, EDGE_B)
+        for c in range(1, 9):
+            bx = 7 + 18 * c
+            rivet(img, bx, top)
+            rivet(img, bx, bottom_line)
+        # oben in den Ecken je eine kleine Figur (dort liegt nie ein Knopf)
+        for (c, name) in ((0, 'gem'), (8, 'pickaxe')):
+            cx0, cy0, _, _ = cell_box(c, 0, c, 0)
+            deko(img, name, cx0 + 1, cy0 + 1, scale=2)
+        for r in range(1, rows):
+            by = 17 + 18 * r
+            rivet(img, cell_box(0, 0, 0, 0)[0] + 8, by)
+            rivet(img, cell_box(8, 0, 8, 0)[0] + 9, by)
     return img
 
 
