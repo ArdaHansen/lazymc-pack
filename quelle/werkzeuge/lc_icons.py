@@ -44,11 +44,41 @@ def coins_pile(c):
         c.ell(10 + idx, yy + 1, 22 - idx, yy + 4, 'h')
 
 
+
+def gift(c):
+    """Geschenk - fuer die Tagesbelohnung."""
+    c.rect(5, 14, 27, 27, 'X')
+    c.rect(5, 11, 27, 15, 'x')
+    c.rect(14, 11, 18, 27, 'Y')
+    c.poly([(16, 11), (10, 5), (8, 10)], 'h')
+    c.poly([(16, 11), (22, 5), (24, 10)], 'h')
+
+
+def flame(c):
+    """Flamme - fuer die Straehne."""
+    c.poly([(16, 3), (24, 14), (22, 24), (10, 24), (8, 14)], 'O')
+    c.poly([(16, 10), (21, 17), (20, 25), (12, 25), (11, 17)], 'Y')
+    c.poly([(16, 17), (19, 21), (16, 27), (13, 21)], 'h')
+
+
+def stairs(c):
+    """Stufen - fuer die Stufenbelohnungen."""
+    c.rect(4, 22, 12, 28, 'B')
+    c.rect(11, 16, 20, 28, 'c')
+    c.rect(19, 9, 28, 28, 'W')
+    c.rect(5, 22, 11, 23, 'u')
+    c.rect(12, 16, 19, 17, 'b')
+    c.rect(20, 9, 27, 10, 'I')
+
+
 ICONS = {
     'sword': (sword, 'red'),
     'clock': (clock, 'blue'),
     'handshake': (handshake, 'green'),
     'coins': (coins_pile, 'gold'),
+    'gift': (gift, 'red'),
+    'flame': (flame, 'orange'),
+    'stairs': (stairs, 'blue'),
 }
 
 

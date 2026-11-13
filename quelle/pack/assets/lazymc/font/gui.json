@@ -113,6 +113,24 @@
     },
     {
       "type": "bitmap",
+      "file": "lazymc:font/gui/belohnungen_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue00c"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/belohnungen_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue00d"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "lazymc:font/gui/logistik_l.png",
       "ascent": 13,
       "height": 126,

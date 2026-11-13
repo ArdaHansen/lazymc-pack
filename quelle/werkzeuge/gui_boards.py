@@ -556,6 +556,18 @@ LAYOUTS = {
         ((5, 3, 8, 4), 'blue', 'STUNDEN', [C.clock], False),
     ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)]),
 
+    # Belohnungen (/belohnungen) - LazyCore RewardsMenu
+    # Oben die Woche, darunter links die Stufen und rechts die Spielzeit. Die Felder
+    # muessen zu RewardsMenu.DAYS, .LEVELS und .HOURS passen.
+    'belohnungen': dict(rows=6, panels=[
+        ((0, 0, 8, 0), 'red', 'TÄGLICH', [C.gift], False),
+        ((0, 2, 3, 2), 'blue', 'STUFEN', [C.stairs], False),
+        ((5, 2, 8, 2), 'gold', 'STUNDEN', [C.clock], False),
+    ], sockets=[(c, 1) for c in range(1, 8)]
+        + [(c, r) for r in (3, 4) for c in (1, 2, 3, 5, 6, 7)]
+        + [(4, 5), (8, 5)],
+        deko=[(4, 2, 'torch')]),
+
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
     'logistik': dict(rows=6, panels=[
         ((0, 0, 3, 1), 'cyan', 'LAGER', [G.warehouse, G.crate], False),
@@ -649,7 +661,8 @@ def main():
     previews = {}
     # Feste Zeichen je Tafel - neue Tafeln hinten anhaengen, nie umnummerieren.
     fixed = {'wirtschaft': 0xE000, 'logistik': 0xE002, 'unternehmen': 0xE004,
-             'kosmetik': 0xE006, 'handel': 0xE008, 'topspieler': 0xE00A}
+             'kosmetik': 0xE006, 'handel': 0xE008, 'topspieler': 0xE00A,
+             'belohnungen': 0xE00C}
     for name, spec in LAYOUTS.items():
         img = build_layout(name, spec)
         save_glyph(img, name, fixed[name], providers)
