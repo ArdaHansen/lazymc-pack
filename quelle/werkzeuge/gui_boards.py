@@ -24,6 +24,7 @@ import os
 from PIL import Image, ImageDraw
 
 import gui_deko
+import lc_icons
 import lcm_icons
 import lcs_icons
 import ll_icons
@@ -495,6 +496,7 @@ def panel(img, area, accent, label, pictures, hero=False):
 L = lcs_icons
 G = ll_icons
 K = lcm_icons
+C = lc_icons
 
 LAYOUTS = {
     # Wirtschaftszentrale (/unternehmen) - LazyChestShops MainMenu
@@ -535,6 +537,25 @@ LAYOUTS = {
         ((5, 4, 8, 4), 'red', 'ABLEGEN', [], False),
     ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
         deko=[(1, 5, 'gem'), (3, 5, 'torch'), (5, 5, 'torch'), (7, 5, 'gem')]),
+
+    # Handelsfenster (/trade) - LazyCore TradeMenu
+    # Links die eigene Seite, rechts die des Partners, dazwischen eine Mittellinie.
+    # Die Felder muessen zu TradeMenu.MINE und TradeMenu.THEIRS passen.
+    'handel': dict(rows=6, panels=[
+        ((0, 0, 3, 0), 'cyan', 'DU', [C.handshake], False),
+        ((5, 0, 8, 0), 'orange', 'PARTNER', [C.coins_pile], False),
+    ], sockets=[(c, r) for r in (1, 2, 3) for c in (1, 2, 3, 5, 6, 7)]
+        + [(1, 4), (3, 4), (5, 4), (7, 4), (4, 5)],
+        deko=[(4, 1, 'coins'), (4, 3, 'gem')]),
+
+    # Ranglisten (/topspieler) - LazyCore LeaderboardMenu
+    'topspieler': dict(rows=6, panels=[
+        ((0, 0, 3, 2), 'gold', 'UNTERNEHMEN', [L.company, L.ranking], False),
+        ((5, 0, 8, 2), 'green', 'BARGELD', [L.treasury], False),
+        ((0, 3, 3, 4), 'red', 'KILLS', [C.sword], False),
+        ((5, 3, 8, 4), 'blue', 'STUNDEN', [C.clock], False),
+    ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
+        deko=[(1, 5, 'gem'), (3, 5, 'torch'), (5, 5, 'torch'), (7, 5, 'coins')]),
 
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
     'logistik': dict(rows=6, panels=[
@@ -629,7 +650,7 @@ def main():
     previews = {}
     # Feste Zeichen je Tafel - neue Tafeln hinten anhaengen, nie umnummerieren.
     fixed = {'wirtschaft': 0xE000, 'logistik': 0xE002, 'unternehmen': 0xE004,
-             'kosmetik': 0xE006}
+             'kosmetik': 0xE006, 'handel': 0xE008, 'topspieler': 0xE00A}
     for name, spec in LAYOUTS.items():
         img = build_layout(name, spec)
         save_glyph(img, name, fixed[name], providers)

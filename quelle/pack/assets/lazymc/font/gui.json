@@ -77,6 +77,42 @@
     },
     {
       "type": "bitmap",
+      "file": "lazymc:font/gui/handel_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue008"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/handel_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue009"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/topspieler_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue00a"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/topspieler_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue00b"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "lazymc:font/gui/logistik_l.png",
       "ascent": 13,
       "height": 126,
