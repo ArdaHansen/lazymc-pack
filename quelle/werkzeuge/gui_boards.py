@@ -550,12 +550,11 @@ LAYOUTS = {
 
     # Ranglisten (/topspieler) - LazyCore LeaderboardMenu
     'topspieler': dict(rows=6, panels=[
-        ((0, 0, 3, 2), 'gold', 'UNTERNEHMEN', [L.company, L.ranking], False),
+        ((0, 0, 3, 2), 'gold', 'UNTERNEHMEN', [L.company], False),
         ((5, 0, 8, 2), 'green', 'BARGELD', [L.treasury], False),
         ((0, 3, 3, 4), 'red', 'KILLS', [C.sword], False),
         ((5, 3, 8, 4), 'blue', 'STUNDEN', [C.clock], False),
-    ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
-        deko=[(1, 5, 'gem'), (3, 5, 'torch'), (5, 5, 'torch'), (7, 5, 'coins')]),
+    ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)]),
 
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
     'logistik': dict(rows=6, panels=[
