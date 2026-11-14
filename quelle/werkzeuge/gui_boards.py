@@ -553,11 +553,12 @@ LAYOUTS = {
 
     # Ranglisten (/topspieler) - LazyCore LeaderboardMenu
     'topspieler': dict(rows=6, panels=[
-        ((0, 0, 3, 2), 'gold', 'UNTERNEHMEN', [L.company], False),
-        ((5, 0, 8, 2), 'green', 'BARGELD', [L.treasury], False),
-        ((0, 3, 3, 4), 'red', 'KILLS', [C.sword], False),
-        ((5, 3, 8, 4), 'blue', 'STUNDEN', [C.clock], False),
-    ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)]),
+        ((0, 0, 3, 2), 'gold', 'UNTERNEHMEN', [L.ranking, L.company, L.shares], False),
+        ((5, 0, 8, 2), 'green', 'BARGELD', [C.coins_pile, L.dividend, L.price], False),
+        ((0, 3, 3, 4), 'red', 'KILLS', [C.sword, C.flame], False),
+        ((5, 3, 8, 4), 'blue', 'STUNDEN', [C.clock, L.stats], False),
+    ], sockets=[(0, 5), (2, 5), (4, 5), (6, 5), (8, 5)],
+        deko=[(1, 5, 'torch'), (3, 5, 'gem'), (5, 5, 'gem'), (7, 5, 'torch')]),
 
     # Belohnungen (/belohnungen) - LazyCore RewardsMenu
     # Oben die Woche, darunter links die Stufen und rechts die Spielzeit. Die Felder
