@@ -545,7 +545,10 @@ LAYOUTS = {
         ((0, 0, 3, 0), 'cyan', 'DU', [C.handshake], False),
         ((5, 0, 8, 0), 'orange', 'PARTNER', [C.coins_pile], False),
     ], sockets=[(c, r) for r in (1, 2, 3) for c in (1, 2, 3, 5, 6, 7)]
-        + [(1, 4), (3, 4), (5, 4), (7, 4), (4, 5)],
+        + [(1, 4), (3, 4), (5, 4), (7, 4), (4, 5)]
+        # Zwei Fassungen in den Bannern fuer die beiden Koepfe - sie stehen sich damit ueber
+        # der Mitte gegenueber, statt ohne Rahmen auf dem gemalten Feld zu liegen.
+        + [(3, 0), (5, 0)],
         deko=[(4, 1, 'coins'), (4, 3, 'gem')]),
 
     # Ranglisten (/topspieler) - LazyCore LeaderboardMenu
