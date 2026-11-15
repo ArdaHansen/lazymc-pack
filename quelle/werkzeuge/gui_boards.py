@@ -410,7 +410,12 @@ def logo(width):
     return small
 
 
-def panel(img, area, accent, label, pictures, hero=False):
+def panel(img, area, accent, label, pictures, hero=False, big=False):
+    """Ein Feld der Tafel.
+
+    ``hero`` setzt Logo und grosses Bild, ``big`` nur das grosse Bild - fuer Felder, die fuer
+    sich stehen und kein Logo brauchen, weil daneben schon zwei gleich grosse haengen.
+    """
     """
     Ein Panel ueber mehreren Feldern - dunkles Glas mit Neonrand in der Panelfarbe.
 
@@ -469,11 +474,11 @@ def panel(img, area, accent, label, pictures, hero=False):
 
     if not pictures:
         return
-    if hero:
-        # Kleines LAZYMC-Logo unter der Beschriftung, darunter das Unternehmen
-        mark = logo(width - 10)
-        mh = mark.size[1] // S
-        img.alpha_composite(mark, ((x0 + 5) * S, (y0 + 14) * S))
+    if hero or big:
+        if hero:
+            # Kleines LAZYMC-Logo unter der Beschriftung, darunter das Unternehmen
+            mark = logo(width - 10)
+            img.alpha_composite(mark, ((x0 + 5) * S, (y0 + 14) * S))
         size = 32
         pic = art(pictures[0], 2)
         img.alpha_composite(pic, ((x0 + (width - size) // 2) * S, (shelf_y - size) * S))
@@ -563,13 +568,28 @@ LAYOUTS = {
     # Belohnungen (/belohnungen) - LazyCore RewardsMenu
     # Oben die Woche, darunter links die Stufen und rechts die Spielzeit. Die Felder
     # muessen zu RewardsMenu.DAYS, .LEVELS und .HOURS passen.
+    # Die Eingangsseite der Belohnungen: drei Truhen nebeneinander, darunter eine Reihe
+    # Fassungen fuer Meilensteine, Spielerkarte und Schliessen.
+    'belohnungen_wahl': dict(rows=6, panels=[
+        ((0, 0, 8, 0), 'cyan', 'BELOHNUNGEN', [], False),
+        ((0, 1, 2, 3), 'red', 'TAG', [C.gift, C.flame], False, True),
+        ((3, 1, 5, 3), 'blue', 'WOCHE', [C.clock, C.gift], False, True),
+        ((6, 1, 8, 3), 'gold', 'MONAT', [L.treasury, C.coins_pile], False, True),
+        ((0, 4, 3, 4), 'purple', 'STUFEN', [C.stairs], False),
+        ((5, 4, 8, 4), 'green', 'STUNDEN', [C.clock], False),
+    # Die drei Truhen sind ganz anklickbar und brauchen keine Fassung; die unterste Reihe
+    # traegt Spielerkarte und Schliessen.
+    ], sockets=[(1, 5), (4, 5), (7, 5)],
+        deko=[(0, 5, 'gem'), (2, 5, 'torch'), (6, 5, 'torch'), (8, 5, 'gem')]),
+
     'belohnungen': dict(rows=6, panels=[
         ((0, 0, 8, 0), 'red', 'TÄGLICH', [C.gift], False),
         ((0, 2, 3, 2), 'blue', 'STUFEN', [C.stairs], False),
         ((5, 2, 8, 2), 'gold', 'STUNDEN', [C.clock], False),
     ], sockets=[(c, 1) for c in range(1, 8)]
         + [(c, r) for r in (3, 4) for c in (1, 2, 3, 5, 6, 7)]
-        + [(4, 5), (8, 5)],
+        # Links zurueck zur Eingangsseite, in der Mitte die Spielerkarte, rechts schliessen.
+        + [(0, 5), (4, 5), (8, 5)],
         deko=[(4, 2, 'torch')]),
 
     # Logistikzentrale (/logistik) - LazyLogistics LogisticsMenu
@@ -590,8 +610,9 @@ GLYPHS = {}   # Name -> (Zeichen links, Zeichen rechts, Hoehe)
 
 def build_layout(name, spec):
     img = board(spec['rows'])
-    for area, accent, label, pictures, hero in spec['panels']:
-        panel(img, area, accent, label, pictures, hero)
+    for entry in spec['panels']:
+        # Fuenf Angaben wie bisher, sechs mit grossem Bild ohne Logo.
+        panel(img, *entry)
     for (c, r) in spec['sockets']:
         socket(img, c, r)
     for (c, r, name) in spec.get('deko', []):
@@ -666,7 +687,7 @@ def main():
     # Feste Zeichen je Tafel - neue Tafeln hinten anhaengen, nie umnummerieren.
     fixed = {'wirtschaft': 0xE000, 'logistik': 0xE002, 'unternehmen': 0xE004,
              'kosmetik': 0xE006, 'handel': 0xE008, 'topspieler': 0xE00A,
-             'belohnungen': 0xE00C}
+             'belohnungen': 0xE00C, 'belohnungen_wahl': 0xE00E}
     for name, spec in LAYOUTS.items():
         img = build_layout(name, spec)
         save_glyph(img, name, fixed[name], providers)

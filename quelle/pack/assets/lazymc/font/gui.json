@@ -113,6 +113,24 @@
     },
     {
       "type": "bitmap",
+      "file": "lazymc:font/gui/belohnungen_wahl_l.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue00e"
+      ]
+    },
+    {
+      "type": "bitmap",
+      "file": "lazymc:font/gui/belohnungen_wahl_r.png",
+      "ascent": 13,
+      "height": 126,
+      "chars": [
+        "\ue00f"
+      ]
+    },
+    {
+      "type": "bitmap",
       "file": "lazymc:font/gui/belohnungen_l.png",
       "ascent": 13,
       "height": 126,
