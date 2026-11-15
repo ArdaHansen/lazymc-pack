@@ -366,6 +366,31 @@ def socket(img, c, r):
     rect(img, x0 + 1, y0 + 1, x1 - 1, y1 - 1, SOCKET)
 
 
+def card(img, c, r, accent, picture, caption):
+    """
+    Eine Truhe zum Anklicken: grosses Bild, darunter die Fassung, darunter die Beschriftung.
+
+    <p>Anders als ein Panel traegt eine Karte ihren Namen unten. Oben stuende er zwischen Bild
+    und Rand im Weg; unten liest er sich wie eine Bildunterschrift, und das Bild bekommt die
+    ganze Hoehe.
+    """
+    light, mid, dark = (hx(x) for x in ACCENT[accent])
+    x0, y0, x1, y1 = cell_box(c, r, c, r)
+    centre = x0 + 9
+
+    pic = art(picture, 2)
+    img.alpha_composite(pic, ((centre - 16) * S, (y0 - 33) * S))
+
+    socket(img, c, r)
+    # Schimmer in der Farbe der Karte um die Fassung, damit die drei auseinanderzuhalten sind
+    px = img.load()
+    for xx in range(x0, x1 + 1):
+        blend(px, img.size, xx, y0 - 1, light, 0.45)
+        blend(px, img.size, xx, y1 + 1, dark, 0.45)
+
+    draw_text(img, centre - text_width(caption) // 2, y1 + 4, caption, STONE_HI, TEXT_RIM, mid)
+
+
 def art(draw_fn, scale):
     """Zeichnung aus den Symbol-Skripten - ohne Kachel, mit Umriss - in Texturpixeln."""
     canvas = Canvas()
@@ -413,14 +438,13 @@ def logo(width):
 def panel(img, area, accent, label, pictures, hero=False, big=False):
     """Ein Feld der Tafel.
 
-    ``hero`` setzt Logo und grosses Bild, ``big`` nur das grosse Bild - fuer Felder, die fuer
-    sich stehen und kein Logo brauchen, weil daneben schon zwei gleich grosse haengen.
-    """
-    """
     Ein Panel ueber mehreren Feldern - dunkles Glas mit Neonrand in der Panelfarbe.
 
     area     (c0, r0, c1, r1)
     pictures Liste von Zeichenfunktionen, die auf einem Regalbrett stehen
+    hero     Logo und grosses Bild
+    big      nur das grosse Bild - fuer Felder, die fuer sich stehen und kein Logo brauchen,
+             weil daneben schon zwei gleich grosse haengen
     """
     light, mid, dark = (hx(c) for c in ACCENT[accent])
     x0, y0, x1, y1 = cell_box(*area)
@@ -572,15 +596,17 @@ LAYOUTS = {
     # Fassungen fuer Meilensteine, Spielerkarte und Schliessen.
     'belohnungen_wahl': dict(rows=6, panels=[
         ((0, 0, 8, 0), 'cyan', 'BELOHNUNGEN', [], False),
-        ((0, 1, 2, 3), 'red', 'TAG', [C.gift, C.flame], False, True),
-        ((3, 1, 5, 3), 'blue', 'WOCHE', [C.clock, C.gift], False, True),
-        ((6, 1, 8, 3), 'gold', 'MONAT', [L.treasury, C.coins_pile], False, True),
-        ((0, 4, 3, 4), 'purple', 'STUFEN', [C.stairs], False),
-        ((5, 4, 8, 4), 'green', 'STUNDEN', [C.clock], False),
-    # Die drei Truhen sind ganz anklickbar und brauchen keine Fassung; die unterste Reihe
-    # traegt Spielerkarte und Schliessen.
-    ], sockets=[(1, 5), (4, 5), (7, 5)],
-        deko=[(0, 5, 'gem'), (2, 5, 'torch'), (6, 5, 'torch'), (8, 5, 'gem')]),
+        # Ein Kasten, darin die drei Truhen nebeneinander - Bild oben, Fassung darunter,
+        # Name als Unterschrift. Jede traegt ihre eigene Farbe.
+        ((0, 1, 8, 4), 'blue', '', [], False),
+        ((0, 5, 2, 5), 'purple', 'STUFEN', [], False),
+        ((3, 5, 5, 5), 'green', 'STUNDEN', [], False),
+    ], cards=[
+        (2, 3, 'red', C.gift, 'TAG'),
+        (4, 3, 'cyan', C.clock, 'WOCHE'),
+        (6, 3, 'gold', L.treasury, 'MONAT'),
+    ], sockets=[(7, 5), (8, 5)],
+        deko=[(6, 5, 'gem')]),
 
     'belohnungen': dict(rows=6, panels=[
         ((0, 0, 8, 0), 'red', 'TÄGLICH', [C.gift], False),
@@ -613,6 +639,8 @@ def build_layout(name, spec):
     for entry in spec['panels']:
         # Fuenf Angaben wie bisher, sechs mit grossem Bild ohne Logo.
         panel(img, *entry)
+    for entry in spec.get('cards', []):
+        card(img, *entry)
     for (c, r) in spec['sockets']:
         socket(img, c, r)
     for (c, r, name) in spec.get('deko', []):
