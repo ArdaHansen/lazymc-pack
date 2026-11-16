@@ -649,6 +649,55 @@ def build_layout(name, spec):
     return img
 
 
+# ------------------------------------------------------------------ Farbige Rahmen
+
+# Jeder Bereich des Servers bekommt seine Farbe: das Auktionshaus orange, der Ankauf gruen, die
+# Kleiderkammer rosa ... Vorher war jede Tafel blau, und man sah einem Menue nicht an, wo man
+# gerade ist. Neue Farben hinten anhaengen - die Zeichen sind fest vergeben.
+THEMES = ['green', 'gold', 'red', 'purple', 'pink', 'teal', 'orange', 'steel']
+THEME_BASE = 0xE060   # je Farbe 0x10 Zeichen, davon 12 belegt (6 Reihenzahlen x 2 Haelften)
+
+_PALETTE = ('EDGE_A', 'EDGE_B', 'BOARD_TOP', 'BOARD_BOT', 'STRIP_TOP', 'STRIP_BOT',
+            'INSET', 'INSET_DARK', 'INSET_LIGHT', 'SOCKET', 'SOCKET_HI', 'SOCKET_LO')
+
+
+class themed:
+    """Zeichnet fuer die Dauer des Blocks in einer anderen Farbe.
+
+    Die Zeichenfunktionen lesen ihre Farben aus Modulvariablen. Statt jeder Funktion eine Farbe
+    durchzureichen, werden die Variablen hier kurz umgestellt und danach zurueckgesetzt - das
+    Blau der bestehenden Tafeln bleibt dadurch Pixel fuer Pixel, wie es war.
+    """
+
+    def __init__(self, accent):
+        light, mid, dark = (hx(c) for c in ACCENT[accent])
+        black = (0, 0, 0, 255)
+        self.colors = {
+            'EDGE_A': light,
+            'EDGE_B': mid,
+            'BOARD_TOP': mix(dark, black, 0.45),
+            'BOARD_BOT': mix(dark, black, 0.65),
+            'STRIP_TOP': mix(dark, black, 0.15),
+            'STRIP_BOT': mix(dark, black, 0.42),
+            'INSET': mix(dark, black, 0.72),
+            'INSET_DARK': mix(dark, black, 0.86),
+            'INSET_LIGHT': mix(mid, black, 0.38),
+            'SOCKET': mix(dark, black, 0.62),
+            'SOCKET_HI': mix(mid, black, 0.28),
+            'SOCKET_LO': mix(dark, black, 0.92),
+        }
+
+    def __enter__(self):
+        g = globals()
+        self.saved = {k: g[k] for k in _PALETTE}
+        g.update(self.colors)
+        return self
+
+    def __exit__(self, *exc):
+        globals().update(self.saved)
+        return False
+
+
 def build_generic(rows, framed):
     """Tafel fuer alle uebrigen Menues: Rahmenfelder als Teil der Tafel, innen vertiefte Plaetze."""
     img = board(rows)
@@ -728,6 +777,15 @@ def main():
     for rows in range(1, 7):
         save_glyph(build_generic(rows, False), f'plain{rows}', code, providers)
         code += 2
+    for index, accent in enumerate(THEMES):
+        code = THEME_BASE + 0x10 * index
+        with themed(accent):
+            for rows in range(1, 7):
+                img = build_generic(rows, True)
+                save_glyph(img, f'frame{rows}_{accent}', code, providers)
+                if rows == 6:
+                    previews[f'frame_{accent}'] = img
+                code += 2
     # Inventarteil je Reihenzahl: beginnt 18*Reihen+18 Pixel unter dem Tafelanfang
     code = 0xE050
     low = bottom()
